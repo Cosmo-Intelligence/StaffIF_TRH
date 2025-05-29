@@ -93,7 +93,10 @@ namespace Serv_UsersIFLinkage.Data.Export.Entity
         if (val == F_REQUESTID)
         {
           // REQUESTID は PKのため, 順序より取得する
-          strbuf = " to_char(sysdate, 'DD') || lpad(ss_toUsersInfoRequestid.nextval, 6, '0') AS " + F_REQUESTID;
+          // 2022.10.04 Mod Cosmo＠Nishihara Start データ複製削除対応
+          //strbuf = " to_char(sysdate, 'DD') || lpad(ss_toUsersInfoRequestid.nextval, 6, '0') AS " + F_REQUESTID;
+          strbuf = " ss_toUsersInfoRequestid_child.nextval AS " + F_REQUESTID;
+          // 2022.10.04 Mod Cosmo＠Nishihara End データ複製削除対応
         }
         else if (val == F_MESSAGEID1)
         {
@@ -105,6 +108,13 @@ namespace Serv_UsersIFLinkage.Data.Export.Entity
           // TRANSFERTEXT は LONG型のため あえての NULL を入れる
           strbuf = ", NULL AS " + F_TRANSFERTEXT;
         }
+        // 2022.10.04 Add Cosmo＠Nishihara Start データ複製削除対応
+        else if (val == F_MESSAGEID2)
+        {
+          // MESSAGEID2 は 取込元のREQUESTIDを入れる
+          strbuf = ", AAA." + F_REQUESTID + " AS "+ F_MESSAGEID2;
+        }
+        // 2022.10.04 Add Cosmo＠Nishihara End データ複製削除対応
         else
         {
           strbuf = ", AAA." + val + " AS " + val;
@@ -130,7 +140,10 @@ namespace Serv_UsersIFLinkage.Data.Export.Entity
         if (val == F_REQUESTID)
         {
           // REQUESTID は PKのため, 順序より取得する
-          strbuf = " to_char(sysdate, 'DD') || lpad(ss_toUsersInfoRequestid.nextval, 6, '0') AS " + F_REQUESTID;
+          // 2022.10.04 Mod Cosmo＠Nishihara Start データ複製削除対応
+          //strbuf = " to_char(sysdate, 'DD') || lpad(ss_toUsersInfoRequestid.nextval, 6, '0') AS " + F_REQUESTID;
+          strbuf = " ss_toUsersInfoRequestid_child.nextval AS " + F_REQUESTID;
+          // 2022.10.04 Mod Cosmo＠Nishihara End データ複製削除対応
         }
         else if (val == F_APPCODE)
         {
@@ -233,7 +246,11 @@ namespace Serv_UsersIFLinkage.Data.Export.Entity
       strSQL += " ) AND (" + F_TRANSFERDATE + " IS NULL";
       strSQL += " ) AND (" + F_TRANSFERRESULT + " IS NULL";
       strSQL += " ) AND (" + F_TRANSFERTEXT + " IS NULL";
-      strSQL += " ) AND (SUBSTR(" + F_MESSAGEID1 + ", 1, 5) <> 'RREC_'))";
+      // 2022.10.04 Mod Cosmo＠Nishihara Start データ複製削除対応
+      //strSQL += " ) AND (SUBSTR(" + F_MESSAGEID1 + ", 1, 5) <> 'RREC_'))";
+      strSQL += " ) AND (SUBSTR(" + F_MESSAGEID1 + ", 1, 5) <> 'RREC_'";
+      strSQL += " ) AND (MESSAGEID1 <> 'ORIGINAL_USER_INFO_RECORD'))";
+      // 2022.10.04 Mod Cosmo＠Nishihara End データ複製削除対応
       lstSQL.Add(strSQL);
 
       strSQL = " UPDATE " + TABLE_NAME + "";

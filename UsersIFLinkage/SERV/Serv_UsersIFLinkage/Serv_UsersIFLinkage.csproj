@@ -75,7 +75,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon\app.ico</ApplicationIcon>
+    <ApplicationIcon>Icon\UsersIFLinkage.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
@@ -105,14 +105,14 @@
     <Compile Include="Data\Export\ToUsersInfo.cs" />
     <Compile Include="Data\Import\Common\ConstQuery.cs" />
     <Compile Include="Data\Import\Common\ImportUtil.cs" />
+    <Compile Include="Data\Import\Entity\SERV_YOKOGAWA_UserManageCompEntity.cs" />
     <Compile Include="Data\Import\Entity\SERV_YOKOGAWA_UserManageEntity.cs" />
     <Compile Include="Data\Import\Entity\SERV_YOKOGAWA_UserAppManageEntity.cs" />
     <Compile Include="Data\Import\Entity\SERV_YOKOGAWA_AttrManageEntity.cs" />
-    <Compile Include="Data\Import\Entity\SERV_ARQS_UserManageEntity.cs" />
+    <Compile Include="Data\Import\SERV_YOKOGAWA_UserManageComp.cs" />
     <Compile Include="Data\Import\SERV_YOKOGAWA_UserManage.cs" />
     <Compile Include="Data\Import\SERV_YOKOGAWA_UserAppManage.cs" />
     <Compile Include="Data\Import\SERV_YOKOGAWA_AttrManage.cs" />
-    <Compile Include="Data\Import\SERV_ARQS_UserManage.cs" />
     <Compile Include="Frm\frmNotifyIcon.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,17 +142,14 @@
     <Compile Include="Util\Logger.cs" />
     <Compile Include="Util\OracleDataBase.cs" />
     <Compile Include="Ctrl\SERV_YOKOGAWA_LinkageController.cs" />
-    <Compile Include="Ctrl\SERV_ARQS_LinkageController.cs" />
     <Compile Include="Util\XmlUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthorizeUser_Report.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="AuthorizeUser_RIS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="AuthorizeUser_Serv.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -160,9 +157,8 @@
     </Content>
     <Content Include="AuthorizeUser_TheraRIS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
-    <Content Include="Icon\app.ico">
+    <Content Include="Icon\UsersIFLinkage.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Install\setup.txt">
@@ -172,6 +168,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Lib\log4net.dll" />
+    <Content Include="UsersIFLinkage.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

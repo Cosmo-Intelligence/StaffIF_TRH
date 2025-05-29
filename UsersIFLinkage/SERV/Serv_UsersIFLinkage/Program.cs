@@ -110,12 +110,6 @@ namespace Serv_UsersIFLinkage
       // アプリ必須項目
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.USER_Conn, table)){ return false; }
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.YOKO_Conn, table)){ return false; }
-      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.ARQS_Conn, table)){ return false; }
-      // Y_Higuchi -- del --
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.MRMS_Conn, table))  { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RRIS_Conn, table))  { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RTRIS_Conn, table)) { return false; }
-      // Y_Higuchi -- del --
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.QueueKeepDays, table)){ return false; }
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.QueueDeleteStatus, table)){ return false; }
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.GetQueueCount, table)){ return false; }
@@ -131,23 +125,11 @@ namespace Serv_UsersIFLinkage
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.YOKOGAWA_CONVERT_MD5, table)){ return false; }
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.YOKOGAWA_CONVERT_GAIJI, table)){ return false; }
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.YOKOGAWA_GAIJI_REPLACE, table)){ return false; }
-      // Y_Higuchi -- del --
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.YOKOGAWA_USERMANAGE_UPD_COLS, table))          { return false; }
-      // Y_Higuchi -- del --
       if (!CommonUtil.getAppConfigValue(AppConfigParameter.YOKOGAWA_USERAPPMANAGE_LICENCETOUSE, table)){ return false; }
       if (!CommonUtil.getAppConfigValue(AppConfigParameter.YOKOGAWA_ATTRMANAGE_TEXTVALUE_DEFAULT, table)){ return false; }
-      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.ARQS_CONVERT_MD5, table)){ return false; }
-      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.ARQS_CONVERT_GAIJI, table)){ return false; }
-      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.ARQS_GAIJI_REPLACE, table)){ return false; }
-        // Y_Higuchi 20170920 -- add --from : 仕変 固定値->設定ファイル値
-      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.ARQS_VIEWRACCESSCTRLFLAG, table)){ return false; }
-      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.ARQS_VIEWCACCESSCTRLFLAG, table)){ return false; }
-        // Y_Higuchi 20170920 -- add --to
-      // Y_Higuchi -- del --
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.ARQS_USERMANAGE_UPD_COLS, table))              { return false; }
-      // Y_Higuchi -- del --
-
-      // Y_Higuchi -- add --
+      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.YOKOGAWA_USERMANAGECOMP_CONVERT_MD5, table)){ return false; }
+      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.YOKOGAWA_USERMANAGECOMP_VIEWRACCESSCTRLFLAG, table)){ return false; }
+      if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.YOKOGAWA_USERMANAGECOMP_VIEWCACCESSCTRLFLAG, table)){ return false; }
       if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.TARGET_DB, table)){ return false; }
 
       string appConfigName = Path.GetFileName(Application.ExecutablePath) + ".config";
@@ -192,46 +174,6 @@ namespace Serv_UsersIFLinkage
         // ユーザ登録条件ファイル(/Report)
         if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.AUTHUSER_Report, table)){ return false; }
       }
-      // Y_Higuchi -- add --
-
-      // Y_Higuchi -- del --
-      //// MRMS項目
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.MRMS_CONVERT_MD5, table))           { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.MRMS_CONVERT_GAIJI, table))         { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.MRMS_GAIJI_REPLACE, table))         { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.MRMS_USERMANAGE_UPD_COLS, table))           { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.MRMS_USERAPPMANAGE_LICENCETOUSE, table))    { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.MRMS_USERINFO_CA_ATTRIBUTE_DEFAULT, table)) { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.MRMS_ATTRMANAGE_TEXTVALUE_DEFAULT, table))  { return false; }
-
-      //// RIS項目
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RRIS_CONVERT_MD5, table))                           { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RRIS_CONVERT_GAIJI, table))                         { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RRIS_GAIJI_REPLACE, table))                         { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_USERMANAGE_UPD_COLS, table))                           { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_USERAPPMANAGE_LICENCETOUSE, table))                    { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_USERINFO_CA_ATTRIBUTE_DEFAULT, table))                 { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_ATTRMANAGE_TEXTVALUE_DEFAULT, table))                  { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_SECTIONDOCTORMASTER_USR_ID, table))                    { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_SECTIONDOCTORMASTER_USR_NAME, table))                  { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RRIS_SECTIONDOCTORMASTER_SHOWORDER_DEFAULT, table)) { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_SECTIONDOCTORMASTER_UPD_COLS, table))                  { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RRIS_SECTIONDOCTORMASTER_USEFLAG, table))                   { return false; }
-
-      //// RTRIS項目
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RTRIS_CONVERT_MD5, table))                            { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RTRIS_CONVERT_GAIJI, table))                          { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RTRIS_GAIJI_REPLACE, table))                          { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RTRIS_USERMANAGE_UPD_COLS, table))                            { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RTRIS_USERAPPMANAGE_LICENCETOUSE, table))                     { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RTRIS_ATTRMANAGE_TEXTVALUE_DEFAULT, table))                   { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RTRIS_USERMANAGECOMP_CONVERT_MD5, table))             { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RTRIS_USERMANAGECOMP_UPD_COLS, table))                        { return false; }
-      //if (!CommonUtil.getNotEmptyAppConfigValue(AppConfigParameter.RTRIS_SECTIONDOCTORMASTER_SHOWORDER_DEFAULT, table))  { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RTRIS_SECTIONDOCTORMASTER_DEFAULT_MENU_GROUP_DEFAULT, table)) { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RTRIS_SECTIONDOCTORMASTER_UPD_COLS, table))                   { return false; }
-      //if (!CommonUtil.getAppConfigValue(AppConfigParameter.RTRIS_SECTIONDOCTORMASTER_USEFLAG, table))                    { return false; }
-      // Y_Higuchi -- del --
 
       return true;
     }

@@ -46,7 +46,7 @@ namespace Serv_UsersIFLinkage.Frm
             try
             {
                 // アイコンの設定
-                this.notifyIcon.Icon = new System.Drawing.Icon(Path.Combine(Application.StartupPath, "Icon\\app.ico"));
+                this.notifyIcon.Icon = new System.Drawing.Icon(Path.Combine(Application.StartupPath, "Icon\\UsersIFLinkage.ico"));
 
                 // 画面を非表示
                 this.Visible = false;

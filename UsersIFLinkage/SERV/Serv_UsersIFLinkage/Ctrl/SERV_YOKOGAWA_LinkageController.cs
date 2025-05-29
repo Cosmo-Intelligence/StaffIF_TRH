@@ -46,22 +46,15 @@ namespace Serv_UsersIFLinkage.Ctrl
     {
       string process = string.Empty;
 
-      // Y_Higuchi -- del --
-      //// DBを取得
-      //string f_db = tousersRow[ToUsersInfoEntity.F_DB].ToString().ToUpper();
-      // Y_Higuchi -- del --
-
-      // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
       if (tousersRow[ToUsersInfoEntity.F_MESSAGEID1].ToString() == Util.CommonParameter.NODE_NAME_EC04)
       {
-        // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
-
         // ① ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
         process = SERV_YOKOGAWA_UserManageEntity.EntityName;
 
         SERV_YOKOGAWA_UserManageEntity manage = new SERV_YOKOGAWA_UserManageEntity();
 
         _log.InfoFormat("{0}マッピング処理を実行します。", process);
+
         // ユーザ管理マッピング処理
         if (!SERV_YOKOGAWA_UserManage.Mapping(tousersRow, ref manage, db))
         {
@@ -70,28 +63,24 @@ namespace Serv_UsersIFLinkage.Ctrl
         }
 
         _log.InfoFormat("{0}更新処理を実行します。", process);
+
         // ユーザ管理更新処理
         if (!SERV_YOKOGAWA_UserManage.Merge(manage, tousersRow, db))
         {
           _log.InfoFormat("{0}更新処理でエラーが発生しました。", process);
           throw new Exception(string.Format("{0}更新処理でエラーが発生しました。", process));
         }
-
-        // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
       }
-      // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
 
-      // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
       if (tousersRow[ToUsersInfoEntity.F_MESSAGEID1].ToString() == Util.CommonParameter.NODE_NAME_EC02)
       {
-        // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
-
         // ② ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
         process = SERV_YOKOGAWA_UserAppManageEntity.EntityName;
 
         List<SERV_YOKOGAWA_UserAppManageEntity> appmanageList = new List<SERV_YOKOGAWA_UserAppManageEntity>();
 
         _log.InfoFormat("{0}マッピング処理を実行します。", process);
+
         // ユーザアプリケーション管理マッピング処理
         if (!SERV_YOKOGAWA_UserAppManage.Mapping(tousersRow, ref appmanageList, db))
         {
@@ -99,16 +88,8 @@ namespace Serv_UsersIFLinkage.Ctrl
           throw new Exception(string.Format("{0}マッピング処理でエラーが発生しました。", process));
         }
 
-        // 2015/08/25 権限変更が不要となった為、コメントアウト
-        //_log.InfoFormat("{0}初期化更新処理を実行します。", process);
-        //// ユーザアプリケーション管理初期化更新処理
-        //if (!SERV_YOKOGAWA_UserAppManage.InitUpdate(appmanageList, tousersRow, db))
-        //{
-        //    _log.ErrorFormat("{0}初期化更新処理でエラーが発生しました。", process);
-        //    throw new Exception(string.Format("{0}初期化更新処理でエラーが発生しました。", process));
-        //}
-
         _log.InfoFormat("{0}更新処理を実行します。", process);
+
         // ユーザアプリケーション管理更新処理
         if (!SERV_YOKOGAWA_UserAppManage.Merge(appmanageList, tousersRow, db))
         {
@@ -122,6 +103,7 @@ namespace Serv_UsersIFLinkage.Ctrl
         List<SERV_YOKOGAWA_AttrManageEntity> attrmanageList = new List<SERV_YOKOGAWA_AttrManageEntity>();
 
         _log.InfoFormat("{0}マッピング処理を実行します。", process);
+
         // 属性管理マッピング処理
         if (!SERV_YOKOGAWA_AttrManage.Mapping(tousersRow, ref attrmanageList, db))
         {
@@ -130,16 +112,40 @@ namespace Serv_UsersIFLinkage.Ctrl
         }
 
         _log.InfoFormat("{0}更新処理を実行します。", process);
+
         // 属性管理更新処理
         if (!SERV_YOKOGAWA_AttrManage.Merge(attrmanageList, tousersRow, db))
         {
           _log.ErrorFormat("{0}更新処理でエラーが発生しました。", process);
           throw new Exception(string.Format("{0}更新処理でエラーが発生しました。", process));
         }
-
-        // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
       }
-      // Y_Higuchi -- add -- 対象レコードのみ実行 -> ifで囲う
+
+      if (tousersRow[Data.Export.Entity.ToUsersInfoEntity.F_MESSAGEID1].ToString() == Util.CommonParameter.NODE_NAME_EC01)
+      {
+        // ④ ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+        process = SERV_YOKOGAWA_UserManageCompEntity.EntityName;
+
+        SERV_YOKOGAWA_UserManageCompEntity manageComp = new SERV_YOKOGAWA_UserManageCompEntity();
+
+        _log.InfoFormat("{0}マッピング処理を実行します。", process);
+
+        // ユーザ管理マッピング処理
+        if (!SERV_YOKOGAWA_UserManageComp.Mapping(tousersRow, ref manageComp, db))
+        {
+          _log.ErrorFormat("{0}マッピング処理でエラーが発生しました。", process);
+          throw new Exception(string.Format("{0}マッピング処理でエラーが発生しました。", process));
+        }
+
+        _log.InfoFormat("{0}更新処理を実行します。", process);
+
+        // ユーザ管理更新処理
+        if (!SERV_YOKOGAWA_UserManageComp.Merge(manageComp, tousersRow, db))
+        {
+          _log.ErrorFormat("{0}更新処理でエラーが発生しました。", process);
+          throw new Exception(string.Format("{0}更新処理でエラーが発生しました。", process));
+        }
+      }
 
       return true;
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Threading;
@@ -19,14 +20,6 @@ namespace Serv_UsersIFLinkage.Ctrl
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(
                 MethodBase.GetCurrentMethod().DeclaringType);
 
-    // Y_Higuchi --del --
-    /// <summary>
-    /// 処理待機時間(単位 : ミリ秒)
-    /// </summary>
-    //private int interval =
-    //            int.Parse(AppConfigController.GetInstance().GetValueString(AppConfigParameter.ThreadInterval));
-    // Y_Higuchi --del --
-
     /// <summary>
     /// USER接続文字列を取得
     /// </summary>
@@ -38,30 +31,6 @@ namespace Serv_UsersIFLinkage.Ctrl
     /// </summary>
     private static string yokoConn =
                 AppConfigController.GetInstance().GetValueString(AppConfigParameter.YOKO_Conn);
-
-    /// <summary>
-    /// ARQS DB接続文字列を取得
-    /// </summary>
-    private static string arqsConn =
-                AppConfigController.GetInstance().GetValueString(AppConfigParameter.ARQS_Conn);
-
-    ///// <summary>
-    ///// MRMS DB接続文字列を取得
-    ///// </summary>
-    //private static string mrmsConn =
-    //        AppConfigController.GetInstance().GetValueString(AppConfigParameter.MRMS_Conn);
-
-    ///// <summary>
-    ///// RRIS DB接続文字列を取得
-    ///// </summary>
-    //private static string rrisConn =
-    //        AppConfigController.GetInstance().GetValueString(AppConfigParameter.RRIS_Conn);
-
-    ///// <summary>
-    ///// RTRIS DB接続文字列を取得
-    ///// </summary>
-    //private static string trisConn =
-    //        AppConfigController.GetInstance().GetValueString(AppConfigParameter.RTRIS_Conn);
 
     #endregion
 
@@ -97,7 +66,6 @@ namespace Serv_UsersIFLinkage.Ctrl
           throw new Exception("ユーザ情報連携I/F処理済データ削除処理でエラーが発生しました。");
         }
 
-        // Y_Higuchi -- add --
         // STATUS='00'のものを拾って必要数増殖する
         _log.Info("ユーザ情報I/Fデータ複製&更新処理を実行します。");
         AuthorizeUser auth = new AuthorizeUser();
@@ -111,10 +79,12 @@ namespace Serv_UsersIFLinkage.Ctrl
           _log.Info("処理対象となるレコードがありません。");
           return true;
         }
-        // Y_Higuchi -- add --
 
         _log.Info("ユーザ情報連携I/Fデータ取得処理を実行します。");
-
+        // 2022.10.04 Add Cosmo＠Nishihara Start データ複製削除対応
+        //1度NG更新処理を行った親レコードのRequestIDを格納するlist
+        List<string> lstNGRequestID = new List<string>();
+        // 2022.10.04 Add Cosmo＠Nishihara End データ複製削除対応
         while (true)
         {
           // ユーザ情報連携I/Fデータ取得処理
@@ -136,6 +106,11 @@ namespace Serv_UsersIFLinkage.Ctrl
             tousersRow[ToUsersInfoEntity.F_TRANSFERSTATUS] = ToUsersInfoEntity.TRANSFERSTATUS_01;
             tousersRow[ToUsersInfoEntity.F_TRANSFERRESULT] = ToUsersInfoEntity.TRANSFERRESULT_OK;
             tousersRow[ToUsersInfoEntity.F_TRANSFERTEXT] = string.Empty;
+
+            // 2022.10.04 Add Cosmo＠Nishihara Start データ複製削除対応
+            //親レコードをNG更新するかの判定
+            bool originalRecodeResult = true;
+            // 2022.10.04 Add Cosmo＠Nishihara End データ複製削除対応
             try
             {
               // 連携処理実行
@@ -143,6 +118,11 @@ namespace Serv_UsersIFLinkage.Ctrl
             }
             catch (Exception ex)
             {
+              // 2022.10.04 Add Cosmo＠Nishihara Start データ複製削除対応
+              _log.ErrorFormat("ユーザ情報連携I/Fデータ連携処理でエラーが発生しました。エラー内容：{0}", ex.Message);
+
+              originalRecodeResult = false;
+              // 2022.10.04 Add Cosmo＠Nishihara End データ複製削除対応
               // エラー発生
               tousersRow[ToUsersInfoEntity.F_TRANSFERSTATUS] = ToUsersInfoEntity.TRANSFERSTATUS_02;
               tousersRow[ToUsersInfoEntity.F_TRANSFERRESULT] = ToUsersInfoEntity.TRANSFERRESULT_NG;
@@ -156,6 +136,24 @@ namespace Serv_UsersIFLinkage.Ctrl
               {
                 _log.ErrorFormat("ユーザ情報連携I/Fデータ処理結果更新処理でエラーが発生しました。【送信要求番号】{0}", tousersRow[ToUsersInfoEntity.F_REQUESTID]);
               }
+
+              // 2022.10.04 Add Cosmo＠Nishihara Start データ複製削除対応
+              // ユーザ情報連携I/Fデータ処理取込元結果NG更新
+              //連携処理失敗時、かつ、失敗した子レコードの親のレコードがNG更新されていない場合
+              if (!originalRecodeResult && !lstNGRequestID.Contains(tousersRow[ToUsersInfoEntity.F_MESSAGEID2].ToString()))
+              {
+                  _log.Info("ユーザ情報連携I/Fデータ処理取込元結果NG更新処理を実行します。");
+                  if (!ToUsersInfo.OriginalRecodeUpdateResult_NG(tousdb, ToUsersInfoEntity.TRANSFERSTATUS_02, ToUsersInfoEntity.TRANSFERRESULT_NG, tousersRow[ToUsersInfoEntity.F_MESSAGEID2].ToString()))
+                  {
+                      throw new Exception("ユーザ情報連携I/Fデータ処理取込元結果NG更新処理でエラーが発生しました。");
+                  }
+
+                  //NG更新した親レコードのREQUESTID(子レコードのMESSAGEID2に格納した値)をリストに追加
+                  lstNGRequestID.Add(tousersRow[ToUsersInfoEntity.F_MESSAGEID2].ToString());
+
+                 _log.InfoFormat("ユーザ情報連携I/Fデータ処理取込元結果NG更新処理が終了しました。【送信要求番号】{0}、【送信ステータス】{1}、【送信結果】{2}", tousersRow[ToUsersInfoEntity.F_MESSAGEID2], ToUsersInfoEntity.TRANSFERSTATUS_02, ToUsersInfoEntity.TRANSFERRESULT_NG);
+              }
+              // 2022.10.04 Add Cosmo＠Nishihara End データ複製削除対応
             }
 
             // 終了指示があるか判定
@@ -169,6 +167,26 @@ namespace Serv_UsersIFLinkage.Ctrl
           // 初期化
           tousersDt.Clear();
         }
+        // 2022.10.04 Add Cosmo＠Nishihara Start データ複製削除対応
+        lstNGRequestID.Clear();
+
+        _log.Info("ユーザ情報連携I/F処理済データ削除処理を実行します。");
+        // ユーザ情報連携I/F処理済データ削除処理
+        if (!ToUsersInfo.CopyDataDelete(tousdb))
+        {
+            throw new Exception("ユーザ情報連携I/F処理済データ削除処理でエラーが発生しました。");
+        }
+
+        // ユーザ情報連携I/Fデータ処理取込元結果更新
+        _log.Info("ユーザ情報連携I/Fデータ処理取込元結果OK更新処理を実行します。");
+
+        if (!ToUsersInfo.OriginalRecodeUpdateResult_OK(tousdb, ToUsersInfoEntity.TRANSFERSTATUS_01, ToUsersInfoEntity.TRANSFERRESULT_OK))
+        {
+            throw new Exception("ユーザ情報連携I/Fデータ処理取込元結果OK更新処理でエラーが発生しました。");
+        }
+
+        _log.InfoFormat("ユーザ情報連携I/Fデータ処理取込元結果OK更新処理の実行が完了しました。");
+        // 2022.10.04 Add Cosmo＠Nishihara End データ複製削除対応
       }
       finally
       {
@@ -194,55 +212,15 @@ namespace Serv_UsersIFLinkage.Ctrl
     {
       // YOKOGAWA DBクラス
       OracleDataBase yokodb = null;
-      // ARQS DBクラス
-      OracleDataBase arqsdb = null;
-      // Y_Higuchi -- del --
-      //// MRMS DBクラス
-      //OracleDataBase mrmsdb = null;
-      //// RRIS DBクラス
-      //OracleDataBase rrisdb = null;
-      //// RTRIS DBクラス
-      //OracleDataBase trisdb = null;
-      // Y_Higuchi -- del --
 
       try
       {
-        // Y_Higuchi -- add --
         _log.InfoFormat("連携処理を開始します。【送信要求番号】{0}", tousersRow[ToUsersInfoEntity.F_REQUESTID]);
-        // Y_Higuchi -- add --
-        // Y_Higuchi -- del --
-        //_log.InfoFormat("連携処理を開始します。【送信要求番号】{0}, 【更新対象DB】{1}",
-        //        tousersRow[ToUsersInfoEntity.F_REQUESTID],
-        //        tousersRow[ToUsersInfoEntity.F_DB]);
-        // Y_Higuchi -- del --
 
         // YOKOGAWADBインスタンス生成
         yokodb = new OracleDataBase(yokoConn);
-        // ARQSDBインスタンス生成
-        arqsdb = new OracleDataBase(arqsConn);
-        // Y_Higuchi -- del --
-        //// MRMSDBインスタンス生成
-        //mrmsdb = new OracleDataBase(mrmsConn);
-        //// RRISDBインスタンス生成
-        //rrisdb = new OracleDataBase(rrisConn);
-        //// RTRISDBインスタンス生成
-        //trisdb = new OracleDataBase(trisConn);
-        // Y_Higuchi -- del --
 
         string dbname = string.Empty;
-        // Y_Higuchi -- del --
-        //string db = tousersRow[ToUsersInfoEntity.F_DB].ToString().ToUpper();
-        // Y_Higuchi -- del --
-
-        // Y_Higuchi -- del --
-        //// 更新対象DBが「SERV, REPORT, RIS, THERARIS」以外の場合
-        //if (db != ToUsersInfoEntity.DB_SERV && db != ToUsersInfoEntity.DB_REPORT
-        //    && db != ToUsersInfoEntity.DB_RIS && db != ToUsersInfoEntity.DB_THERARIS)
-        //{
-        //  throw new Exception(string.Format("更新対象DB設定値が処理対象外でした。【処理対象】{0}, {1}, {2}, {3} 【更新対象DB設定値】{4}",
-        //          ToUsersInfoEntity.DB_SERV, ToUsersInfoEntity.DB_REPORT, ToUsersInfoEntity.DB_RIS, ToUsersInfoEntity.DB_THERARIS, db));
-        //}
-        // Y_Higuchi -- del --
 
         dbname = "【SERV】YOKOGAWA";
         _log.InfoFormat("{0}連携処理を実行します。", dbname);
@@ -259,123 +237,17 @@ namespace Serv_UsersIFLinkage.Ctrl
           throw new Exception(string.Format("{0}連携処理でエラーが発生しました。", dbname));
         }
 
-        // Y_Higuchi -- del --
-        //// 更新対象DBが「SERV」の場合
-        //if (db == ToUsersInfoEntity.DB_SERV)
-        //{
-        // Y_Higuchi -- del --
-          dbname = "【SERV】ARQS";
-          _log.InfoFormat("{0}連携処理を実行します。", dbname);
-
-          // SERV ARQS接続
-          arqsdb.Open();
-
-          // SERV ARQS連携処理
-          SERV_ARQS_LinkageController arqsLink = new SERV_ARQS_LinkageController(arqsdb);
-
-          // SERV ARQS連携処理実行
-          if (!arqsLink.Execute(tousersRow))
-          {
-            throw new Exception(string.Format("{0}連携処理でエラーが発生しました。", dbname));
-          }
-        // Y_Higuchi -- del --
-        //}
-        // Y_Higuchi -- del --
-
-        // A_Yoshida -- del -- 
-        //// 更新対象DBが「REPORT」の場合
-        //if (db == ToUsersInfoEntity.DB_REPORT)
-        //{
-        //	dbname = "【REPORT】MRMS";
-        //	_log.InfoFormat("{0}連携処理を実行します。", dbname);
-
-        //	// REPORT MRMS接続
-        //	mrmsdb.Open();
-
-        //	// REPORT連携処理
-        //	REPORT_MRMS_LinkageController mrmsLink = new REPORT_MRMS_LinkageController(mrmsdb);
-
-        //	// REPORT連携処理実行
-        //	if (!mrmsLink.Execute(tousersRow))
-        //	{
-        //		throw new Exception(string.Format("{0}連携処理でエラーが発生しました。", dbname));
-        //	}
-        //}
-
-        //// 更新対象DBが「RIS」の場合
-        ////if (db == ToUsersInfoEntity.DB_RIS)
-        ////{
-        //    dbname = "【RIS】RRIS";
-        //    _log.InfoFormat("{0}連携処理を実行します。", dbname);
-
-        //    // RIS RRIS接続
-        //    rrisdb.Open();
-
-        //    // RIS連携処理
-        //    RIS_RRIS_LinkageController rrisLink = new RIS_RRIS_LinkageController(rrisdb);
-
-        //    // RIS連携処理実行
-        //    if (!rrisLink.Execute(tousersRow))
-        //    {
-        //        throw new Exception(string.Format("{0}連携処理でエラーが発生しました。", dbname));
-        //    }
-        ////}
-
-        //// 更新対象DBが「THERARIS」の場合
-        ////if (db == ToUsersInfoEntity.DB_THERARIS)
-        ////{
-        //    dbname = "【THERARIS】RTRIS";
-        //    _log.InfoFormat("{0}連携処理を実行します。", dbname);
-
-        //    // THERARIS RTRIS接続
-        //    trisdb.Open();
-
-        //    // RTRIS連携処理
-        //    THERARIS_RTRIS_LinkageController trisLink = new THERARIS_RTRIS_LinkageController(trisdb);
-
-        //    // RTRIS連携処理実行
-        //    if (!trisLink.Execute(tousersRow))
-        //    {
-        //        throw new Exception(string.Format("{0}連携処理でエラーが発生しました。", dbname));
-        //    }
-        ////}
-        // A_Yoshida -- del -- 
-
         yokodb.Commit();
-        arqsdb.Commit();
-        // Y_Higuchi -- del --
-        //mrmsdb.Commit();
-        //rrisdb.Commit();
-        //trisdb.Commit();
-        // Y_Higuchi -- del --
       }
       catch (Exception ex)
       {
         yokodb.RollBack();
-        arqsdb.RollBack();
-        // Y_Higuchi -- del --
-        //mrmsdb.RollBack();
-        //rrisdb.RollBack();
-        //trisdb.RollBack();
-        // Y_Higuchi -- del --
         throw ex;
       }
       finally
       {
         yokodb.Close();
-        arqsdb.Close();
-        // Y_Higuchi -- del --
-        //mrmsdb.Close();
-        //rrisdb.Close();
-        //trisdb.Close();
-        // Y_Higuchi -- del --
         yokodb = null;
-        arqsdb = null;
-        // Y_Higuchi -- del --
-        //mrmsdb = null;
-        //rrisdb = null;
-        //trisdb = null;
-        // Y_Higuchi -- del --
         _log.Info("連携処理を終了します。");
       }
 

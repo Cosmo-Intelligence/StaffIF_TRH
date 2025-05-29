@@ -98,6 +98,58 @@ namespace Serv_UsersIFLinkage.Data.Export.Common
                 + " where"
                 + "   REQUESTID = {0}";
 
+        // 2022.10.04 Add Cosmo＠Nishihara Start データ複製削除対応
+        /// <summary>
+        /// ユーザ情報連携I/F削除
+        /// </summary>
+        public const string TOUSERSINFO_COPYDATA_DELETE =
+                  " delete"
+                + " from"
+                + "   TOUSERINFO_SRV"
+                + " where"
+                + "   MESSAGEID1 <> 'ORIGINAL_USER_INFO_RECORD'"
+                + " and"
+                + "   TRANSFERSTATUS in ({0})";
+
+        /// <summary>
+        /// ユーザ情報連携I/F更新(取込元のレコード)
+        /// </summary>
+        public const string TOUSERSINFO_ORIGINALRECORD_UPDATE_OK =
+                  " update"
+                + "   TOUSERINFO_SRV"
+                + " set"
+                + "   MESSAGEID1 = '',"
+                + "   TRANSFERSTATUS = {0},"
+                + "   TRANSFERRESULT = {1},"
+                + "   TRANSFERDATE   = sysdate"
+                + " where"
+                + "   TRANSFERSTATUS = '00' " 
+                + " and"
+                + "   TRANSFERRESULT IS NULL "
+                + " and"
+                + "   MESSAGEID1 = 'ORIGINAL_USER_INFO_RECORD'";
+
+        /// <summary>
+        /// ユーザ情報連携I/F NG更新
+        /// </summary>
+        public const string TOUSERSINFO_ORIGINALRECORD_UPDATE_NG =
+                  " update"
+                + "   TOUSERINFO_SRV"
+                + " set"
+                + "   MESSAGEID1 = '',"
+                + "   TRANSFERSTATUS = {0},"
+                + "   TRANSFERRESULT = {1},"
+                + "   TRANSFERDATE   = sysdate"
+                + " where"
+                + "   TRANSFERSTATUS = '00' " 
+                + " and"
+                + "   TRANSFERRESULT IS NULL "
+                + " and"
+                + "   MESSAGEID1 = 'ORIGINAL_USER_INFO_RECORD'"
+                + " and"
+                + "   REQUESTID = {2}";
+        // 2022.10.04 Add Cosmo＠Nishihara End データ複製削除対応
+
         #endregion
 
         #endregion

@@ -8,11 +8,11 @@ cd C:\Users\ichinose\Desktop\work\01_ì‹Æ\01_ˆÄŒ\02_‰¡‰Í\jr_JR“Œ‹‘‡\01_ƒ\[ƒ
 rem ===================================================
 rem 32bitƒAƒvƒŠ‚Ìê‡
 rem ===================================================
-C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe /u ..\UsersIFLinkage.exe
+rem C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe /u ..\Serv_UsersIFLinkage.exe
 
 rem ===================================================
 rem 64bitƒAƒvƒŠ‚Ìê‡
 rem ===================================================
-rem C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe /u ..\UsersIFLinkage.exe
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe /u ..\Serv_UsersIFLinkage.exe
 
 pause

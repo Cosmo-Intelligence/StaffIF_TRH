@@ -40,7 +40,7 @@ namespace Serv_UsersIFLinkage.Ctrl
     }
 
     /// <summary>
-    /// Serv.ARQS 用 登録条件
+    /// Serv.YOKOGAWA.USERMANAGECOMP 用 登録条件
     /// </summary>
     private NODE_EC ec01;
 
@@ -148,8 +148,10 @@ namespace Serv_UsersIFLinkage.Ctrl
           db.ExecuteQuery(strSQL);
         }
 
+        // 2022.10.04 Del Cosmo＠Nishihara Start データ複製削除対応
         // 削除
-        db.ExecuteQuery(tuia.Get_DELSQL());
+        //db.ExecuteQuery(tuia.Get_DELSQL());
+        // 2022.10.04 Del Cosmo＠Nishihara End データ複製削除対応
 
         // 重複レコードを削除する
         lstSQL.Clear();

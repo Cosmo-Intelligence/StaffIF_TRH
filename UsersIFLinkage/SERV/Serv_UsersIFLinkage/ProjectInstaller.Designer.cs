@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
-            this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
-            // 
-            // serviceProcessInstaller1
-            // 
-            this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
-            this.serviceProcessInstaller1.Password = null;
-            this.serviceProcessInstaller1.Username = null;
-            // 
-            // serviceInstaller1
-            // 
-            this.serviceInstaller1.Description = "職員情報連携サービス";
-            this.serviceInstaller1.DisplayName = "UsersIFLinkageService";
-            this.serviceInstaller1.ServiceName = "UsersIFLinkageService";
-            // 
-            // ProjectInstaller
-            // 
-            this.Installers.AddRange(new System.Configuration.Install.Installer[] {
+			this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
+			this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
+			// 
+			// serviceProcessInstaller1
+			// 
+			this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
+			this.serviceProcessInstaller1.Password = null;
+			this.serviceProcessInstaller1.Username = null;
+			// 
+			// serviceInstaller1
+			// 
+			this.serviceInstaller1.Description = "職員情報連携サービス";
+			this.serviceInstaller1.DisplayName = "UsersIFLinkageService_Serv";
+			this.serviceInstaller1.ServiceName = "UsersIFLinkageService_Serv";
+			// 
+			// ProjectInstaller
+			// 
+			this.Installers.AddRange(new System.Configuration.Install.Installer[] {
             this.serviceProcessInstaller1,
             this.serviceInstaller1});
 
