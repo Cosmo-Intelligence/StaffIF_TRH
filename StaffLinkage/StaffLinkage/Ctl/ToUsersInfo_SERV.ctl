@@ -1,4 +1,4 @@
-OPTIONS(SKIP=1,ERRORS=-1,ROWS=-1)
+OPTIONS(SKIP = 1)
 LOAD DATA CHARACTERSET JA16SJIS
 APPEND
 INTO TABLE TOUSERINFO_SRV
@@ -8,7 +8,7 @@ TERMINATED BY "," OPTIONALLY ENCLOSED BY '"' TRAILING NULLCOLS
 REQUESTID "to_char(sysdate, 'DD') || lpad(ss_toUsersInfoRequestid.nextval, 6, '0')",
 REQUESTDATE "(select sysdate from dual)",
 DB "(select 'SERV' from dual)",
-APPCODE "(select '' from dual)",
+APPCODE "(select 'ServAdWeb,UserManage,EPVR,EPVC' from dual)",
 USERID,
 HOSPITALID "(select 'HID' from dual)",
 PASSWORD,

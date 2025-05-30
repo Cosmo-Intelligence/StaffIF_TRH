@@ -8,7 +8,7 @@ TERMINATED BY "," OPTIONALLY ENCLOSED BY '"' TRAILING NULLCOLS
 REQUESTID "to_char(sysdate, 'DD') || lpad(ss_toUsersInfoRequestid.nextval, 6, '0')",
 REQUESTDATE "(select sysdate from dual)",
 DB "(select 'THERARIS' from dual)",
-APPCODE "(select '' from dual)",
+APPCODE "(select 'TheraRIS' from dual)",
 USERID,
 HOSPITALID "(select 'HID' from dual)",
 PASSWORD,
