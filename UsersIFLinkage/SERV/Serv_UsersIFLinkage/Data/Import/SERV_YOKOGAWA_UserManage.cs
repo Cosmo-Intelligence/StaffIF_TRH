@@ -92,10 +92,16 @@ namespace Serv_UsersIFLinkage.Data.Import
         usermanage.Passwordexpirydate = ImportUtil.ConvertDateTime(tousersRow[ToUsersInfoEntity.F_PASSWORDEXPIRYDATE].ToString());
         usermanage.Passwordwarningdate = ImportUtil.ConvertDateTime(tousersRow[ToUsersInfoEntity.F_PASSWORDWARNINGDATE].ToString());
         usermanage.Useridvalidityflag = tousersRow[ToUsersInfoEntity.F_USERIDVALIDITYFLAG].ToString();
-        usermanage.Belongingdepartment = null;
+        // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+        //usermanage.Belongingdepartment = null;
+        usermanage.Belongingdepartment = tousersRow[ToUsersInfoEntity.F_SECTION_ID].ToString();
+        // 2025.06.xx Mod Cosmo＠Yamamoto End   東京労災病院改修対応
         usermanage.Maingroupid = null;
         usermanage.Subgroupidlist = null;
         usermanage.Updatedatetime = ImportUtil.SYSDATE;
+        // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+        usermanage.Officeid = tousersRow[ToUsersInfoEntity.F_SYOKUIN_KBN].ToString();
+        // 2025.06.xx Mod Cosmo＠Yamamoto End   東京労災病院改修対応
 
         // データをログに出力
         //_log.Debug(usermanage.ToString());
@@ -141,6 +147,9 @@ namespace Serv_UsersIFLinkage.Data.Import
                       OracleDataBase.SingleQuotes(usermanage.Maingroupid),
                       OracleDataBase.SingleQuotes(usermanage.Subgroupidlist),
                       usermanage.Updatedatetime,
+                      // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+                      OracleDataBase.SingleQuotes(usermanage.Officeid),
+                      // 2025.06.xx Mod Cosmo＠Yamamoto End   東京労災病院改修対応
                       GetUpdateSql(usermanage)
                       );
         }
@@ -243,6 +252,32 @@ namespace Serv_UsersIFLinkage.Data.Import
 
         updateSql += col + " = " + OracleDataBase.SingleQuotes(usermanage.Useridvalidityflag);
       }
+
+      // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+      // 所属科
+      col = "BELONGINGDEPARTMENT";
+      if (Array.IndexOf(updCols, col) > -1)
+      {
+        if (!string.IsNullOrEmpty(updateSql))
+        {
+          updateSql += ",";
+        }
+
+        updateSql += col + " = " + OracleDataBase.SingleQuotes(usermanage.Belongingdepartment);
+      }
+
+      // 職制ID
+      col = "OFFICE_ID";
+      if (Array.IndexOf(updCols, col) > -1)
+      {
+        if (!string.IsNullOrEmpty(updateSql))
+        {
+          updateSql += ",";
+        }
+
+        updateSql += col + " = " + OracleDataBase.SingleQuotes(usermanage.Officeid);
+      }
+      // 2025.06.xx Mod Cosmo＠Yamamoto End   東京労災病院改修対応
 
       // UPDATEする項目が存在した場合
       if (!string.IsNullOrEmpty(updateSql))

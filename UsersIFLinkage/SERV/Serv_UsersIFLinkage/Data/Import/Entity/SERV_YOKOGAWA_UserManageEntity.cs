@@ -196,6 +196,22 @@ namespace Serv_UsersIFLinkage.Data.Import.Entity
             set { updatedatetime = value; }
         }
 
+        // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+        /// <summary>
+        /// 職制ID
+        /// </summary>
+        private string officeid = null;
+
+        /// <summary>
+        /// 職制ID
+        /// </summary>
+        public string Officeid
+        {
+            get { return officeid; }
+            set { officeid = value; }
+        }
+        // 2025.06.xx Mod Cosmo＠Yamamoto End   東京労災病院改修対応
+
         #endregion
 
         #region filed定数

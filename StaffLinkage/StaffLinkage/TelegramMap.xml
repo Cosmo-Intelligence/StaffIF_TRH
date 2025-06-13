@@ -43,6 +43,7 @@
     <TOUSERSINFO id="RID" value="USERID|PASSWORD|STAFFID" /><!--□複数項目へ対応-->
     <TOUSERSINFO id="NAMEN" value="USERNAMEKANJI" /><!--■id変更不可■特殊仕様アリ：旧漢字変換-->
     <TOUSERSINFO id="SYOKUKBN" value="SYOKUIN_KBN" /><!--■id変更不可■特殊仕様アリ：設定ファイルによる変換-->
+	<TOUSERSINFO id="TNT_1_KA" value="SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
     <TOUSERSINFO id="TNT_1_KA" value="TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
     <TOUSERSINFO id="TNT_2_KA" value="TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
     <TOUSERSINFO id="TNT_3_KA" value="TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->

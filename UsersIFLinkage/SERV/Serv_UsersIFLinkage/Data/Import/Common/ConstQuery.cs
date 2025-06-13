@@ -21,7 +21,10 @@ namespace Serv_UsersIFLinkage.Data.Import.Common
                 + "   and"
                 + "     USERMANAGE.HOSPITALID = dummy.HOSPITALID"
                 + " )"
-                + " {12}"
+                // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+                //+ " {12}"
+                + " {13}"
+                // 2025.06.xx Mod Cosmo＠Yamamoto End   東京労災病院改修対応
                 + " when not matched then"
                 + "   insert"
                 + "     (USERID,"
@@ -35,7 +38,11 @@ namespace Serv_UsersIFLinkage.Data.Import.Common
                 + "      BELONGINGDEPARTMENT,"
                 + "      MAINGROUPID,"
                 + "      SUBGROUPIDLIST,"
-                + "      UPDATEDATETIME)"
+                // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+                //+ "      UPDATEDATETIME)"
+                + "      UPDATEDATETIME,"
+                + "      OFFICE_ID)"
+                // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
                 + "   values"
                 + "     ({0},"
                 + "      {1},"
@@ -48,12 +55,16 @@ namespace Serv_UsersIFLinkage.Data.Import.Common
                 + "      {8},"
                 + "      {9},"
                 + "      {10},"
-                + "      {11})";
+                // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
+                //+ "      {11})";
+                + "      {11},"
+                + "      {12})";
+                // 2025.06.xx Mod Cosmo＠Yamamoto Start   東京労災病院改修対応
 
-    /// <summary>
-    /// ユーザ管理 削除
-    /// </summary>
-    public const string YOKOGAWA_USERMANAGE_DELETE =
+        /// <summary>
+        /// ユーザ管理 削除
+        /// </summary>
+        public const string YOKOGAWA_USERMANAGE_DELETE =
                   " update USERMANAGE"
                 + " set"
                 + "   USERIDVALIDITYFLAG = {2},"
