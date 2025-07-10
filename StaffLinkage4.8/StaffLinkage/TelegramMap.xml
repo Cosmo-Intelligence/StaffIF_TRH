@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <!-- *********************************************************************** -->
+  <!-- 利用者情報:項目定義 -->
+  <!-- id="項目名" value="開始位置[Byte目]|データ長[Byte]" -->
+    <EYBNWGCP id="RID" value="1|8"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA1" value="9|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="NAMEN" value="10|20"/><!--■id変更不可■特殊仕様アリ：旧漢字変換-->
+    <EYBNWGCP id="COMMA2" value="30|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="NAMEK" value="31|40"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA3" value="71|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="SYOKUKBN" value="72|3"/><!--■id変更不可■特殊仕様アリ：設定ファイルによる変換-->
+    <EYBNWGCP id="COMMA4" value="75|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_1_BT" value="76|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA5" value="79|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_2_BT" value="80|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA6" value="83|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_3_BT " value="84|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA7" value="87|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_4_BT" value="88|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA8" value="91|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_5_BT" value="92|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA9" value="95|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_1_KA" value="96|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA10" value="99|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_2_KA" value="100|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA11 " value="103|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_3_KA" value="104|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA12" value="107|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_4_KA" value="108|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA13" value="111|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="TNT_5_KA" value="112|3"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA14" value="115|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="YUKO_ST" value="116|8"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA15" value="124|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="YUKO_ED" value="125|8"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="COMMA16" value="133|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <EYBNWGCP id="STP_FLG" value="134|1"/><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+
+  <!-- *********************************************************************** -->
+  <!-- ToUsersInfo;対応項目 -->
+  <!-- id="項目名(利用者情報:項目定義の項目名と一致していること)"を value="ToUsersInfoの項目名" へ格納 全て大文字で設定してください。 -->
+    <TOUSERSINFO id="RID" value="USERID|PASSWORD|STAFFID" /><!--□複数項目へ対応-->
+    <TOUSERSINFO id="NAMEN" value="USERNAMEKANJI" /><!--■id変更不可■特殊仕様アリ：旧漢字変換-->
+    <TOUSERSINFO id="SYOKUKBN" value="SYOKUIN_KBN" /><!--■id変更不可■特殊仕様アリ：設定ファイルによる変換-->
+    <TOUSERSINFO id="TNT_1_KA" value="SECTION_ID|TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <TOUSERSINFO id="TNT_2_KA" value="TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <TOUSERSINFO id="TNT_3_KA" value="TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <TOUSERSINFO id="TNT_4_KA" value="TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <TOUSERSINFO id="TNT_5_KA" value="TANTO_SECTION_ID" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+    <TOUSERSINFO id="YUKO_ED" value="PASSWORDEXPIRYDATE|USERIDVALIDITYFLAG" /><!--■id & value変更不可■特殊仕様アリ：有効期限関連 □複数項目へ対応-->
+    <TOUSERSINFO id="STP_FLG" value="REQUESTTYPE" /><!--■id & value変更不可■特殊仕様アリ：項目特殊編集-->
+
+</configuration>
